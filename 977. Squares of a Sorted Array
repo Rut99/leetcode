@@ -1,0 +1,49 @@
+/*
+977. Squares of a Sorted Array
+Example 1:
+Input: nums = [-4,-1,0,3,10]
+Output: [0,1,9,16,100]
+Explanation: After squaring, the array becomes [16,1,0,9,100].
+After sorting, it becomes [0,1,9,16,100].
+Example 2:
+Input: nums = [-7,-3,2,3,11]
+Output: [4,9,9,49,121]
+*/
+
+class Solution {
+    public int[] sortedSquares(int[] nums) {
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        ArrayList<Integer> negative = new ArrayList<Integer>();
+        ArrayList<Integer> positive = new ArrayList<Integer>();
+        for(int num: nums){
+            if(num < 0){
+                negative.add(num*num);
+            }else{
+                positive.add(num*num);
+            }
+        }
+        int neg = negative.size() - 1;
+        int pos = 0;
+        while(neg >= 0  || pos < positive.size()){
+            if(neg >= 0 && pos < positive.size()) {
+                if (negative.get(neg) > positive.get(pos)) {
+                    result.add(positive.get(pos));
+                    pos++;
+                } else {
+                    result.add(negative.get(neg));
+                    neg--;
+                }
+            }else if(neg < 0  && pos < positive.size()){
+                result.add(positive.get(pos));
+                pos++;
+            }else{
+                result.add(negative.get(neg));
+                neg--;
+            }
+
+        }
+        int[] n = new int[result.size()];
+        Arrays.setAll(n, result::get);
+        return n;
+    }
+}
